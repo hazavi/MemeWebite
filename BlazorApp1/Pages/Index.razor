@@ -1,0 +1,55 @@
+﻿@page "/"
+@using BlazorApp1.Data
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<button @onclick="ReadFromSql">Read From Sql</button>
+
+
+@if (memeList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name. (C)</th>
+                <th>Url. (F)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var meme in memeList)
+            {
+                <tr>
+                    <td>@meme.Id</td>
+                    <td>@meme.MemeName</td>
+                    <td>@meme.Url</td>
+                </tr>
+            }
+
+            <tr>
+                <td><button @onclick(AddToSql)>Add</button></td>
+                <td><input @bind = "meme.MemeName"/></td>
+                <td><input @bind = "meme.Url"/></td>
+            </tr>
+
+        </tbody>
+    </table>
+}
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    Sql sql = new();
+    Meme meme = new();
+    List<Meme> memeList = new();
+    void ReadFromSql() { memeList = sql.Read(); }
+
+    void AddToSql() { sql.Create(meme); }
+}
